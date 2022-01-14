@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
+import { WordService } from './word.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'wordmind';
+  constructor(private _wordService: WordService) {}
+
+  newGame() {
+    this._wordService.startGame().subscribe(word => {
+      console.log(word);
+    })
+  }
 }
