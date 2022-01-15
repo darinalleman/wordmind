@@ -1,5 +1,29 @@
 .guess-char {
-    float: left;
 	margin-left:15px;
     font-size: larger;
+    width: 10px;
+    padding: 3px;
+    background-color: darkgrey;
+}
+
+.previous-guesses {
+}
+
+
+.word {
+    //margin:0;
+    display: flex;
+    flex-direction: row;
+}
+
+.correct {
+    background-color: lightgreen !important;
+}
+
+.half {
+    background-color: lightyellow !important;
+}
+
+.incorrect {
+    background-color: lightgrey !important;
 }

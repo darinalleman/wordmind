@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { WordService } from '../word.service';
 
 @Component({
@@ -6,13 +6,23 @@ import { WordService } from '../word.service';
   templateUrl: './guesses.component.html',
   styleUrls: ['./guesses.component.scss']
 })
-export class GuessesComponent implements OnInit {
+export class GuessesComponent implements OnInit, OnChanges {
   public currentGuess: string = "";
-  public numbers = Array(6).fill(null, 0, 6);
+  public numbers = Array(5).fill(null, 0, 6);
+  public previousGuesses: string[] = [];
+  public previousResults: string[] = [];
 
+  @Input() newGame: boolean = false;
   constructor(private _wordService: WordService) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['newGame'].previousValue != changes['newGame'].currentValue) {
+      this.previousGuesses = [];
+      this.previousResults = [];
+    }
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -24,10 +34,25 @@ export class GuessesComponent implements OnInit {
       this.currentGuess = this.currentGuess.slice(0, this.currentGuess.length - 1);
     }
     if (event.key === "Enter") {
-      this._wordService.submitGuess(this.currentGuess).subscribe(res => {
-          console.log(res);
+      this._wordService.submitGuess(this.currentGuess, this._wordService.getAnswer()).subscribe(res => {
+          this.previousResults.push(res.toString());
+          this.previousGuesses.push(this.currentGuess);
+          this.currentGuess = "";
         })
     }
+  }
+
+  getStatusClass(result: string) {
+    if (result === "3") {
+      return "correct";
+    }
+    else if (result === "2") {
+      return "half";
+    }
+    else if (result === "1") {
+      return "incorrect";
+    }
+    return "incorrect";
   }
 
 }

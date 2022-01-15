@@ -7,24 +7,31 @@ import { Guess } from './models/models';
   providedIn: 'root'
 })
 export class WordService {
-  private base: String = ""
-
+  private answer: string = "";
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
     })
   };
+
   constructor(
     private _http: HttpClient
   ) { }
 
   startGame() {
-    return this._http.get('/api/word/', {responseType: 'text'});
+    return this._http.get('/api/word/', {responseType: 'text'}).subscribe(answer => {
+      this.answer = answer;
+    });
   }
 
-  submitGuess(inputGuess: string) : Observable<number> {
+  submitGuess(inputGuess: string, answer: string) {
     let guessParam = new Guess();
     guessParam.guess = inputGuess;
-    return this._http.post<number>('/api/guess/', guessParam, this.httpOptions);
+    guessParam.answer = answer;
+    return this._http.post('/api/guess/', guessParam, this.httpOptions);
+  }
+
+  getAnswer() : string {
+    return this.answer;
   }
 }

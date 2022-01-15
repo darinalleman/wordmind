@@ -8,11 +8,12 @@ import { WordService } from './word.service';
 })
 export class AppComponent {
   title = 'wordmind';
+  public gameChange: boolean = false;
+
   constructor(private _wordService: WordService) {}
 
   newGame() {
-    this._wordService.startGame().subscribe(word => {
-      console.log(word);
-    })
+    this._wordService.startGame();
+
   }
 }
