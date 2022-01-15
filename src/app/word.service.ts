@@ -1,12 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Guess } from './models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WordService {
+  private baseUrl = "";
   private answer: string = "";
   private httpOptions = {
     headers: new HttpHeaders({
@@ -16,7 +16,7 @@ export class WordService {
 
   constructor(
     private _http: HttpClient
-  ) { }
+  ) {}
 
   startGame() {
     return this._http.get('/api/word/', {responseType: 'text'}).subscribe(answer => {

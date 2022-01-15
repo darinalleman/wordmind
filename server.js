@@ -13,9 +13,14 @@ var cryptoJS = require("crypto-js");
 
 // Create new instance of the express server
 var app = express();
+var api = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+
+api.use(express.json());
+api.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.use(express.static('./dist/wordmind'));
 
@@ -28,9 +33,14 @@ var server = app.listen(process.env.PORT || 8080, function () {
     console.log("App now running on port", port);
 });
 
+var apiServer = api.listen(process.env.PORT || 3000, function () {
+    var port = apiServer.address().port;
+    console.log("API now running on port", port);
+});
+
 app.get('/api/word', function(req, res, next) {
     var random = Math.round(Math.random()*2315);
-    var word = words.data[random];
+    var word = words.all[random];
     console.log(word);
     var encrypted = cryptoJS.AES.encrypt(word, salt.data).toString();
     res.status(200).send(encrypted);

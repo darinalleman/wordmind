@@ -23,6 +23,8 @@ export class NavComponent {
     this.gameChange = !this.gameChange;
   }
 
+
+
   constructor(private breakpointObserver: BreakpointObserver) {}
 
 }

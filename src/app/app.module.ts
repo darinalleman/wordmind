@@ -13,12 +13,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import { GuessesComponent } from './guesses/guesses.component';
+import { KeyboardComponent } from './keyboard/keyboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    GuessesComponent
+    GuessesComponent,
+    KeyboardComponent
   ],
   imports: [
     BrowserModule,

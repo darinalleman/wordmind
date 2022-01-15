@@ -27,21 +27,31 @@ export class GuessesComponent implements OnInit, OnChanges {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (/^[a-z]$/i.test(event.key) && this.currentGuess.length <= 5) {
-      this.currentGuess = this.currentGuess.concat(event.key);
-    }
-    if (event.key === "Backspace") {
-      this.currentGuess = this.currentGuess.slice(0, this.currentGuess.length - 1);
-    }
-    if (event.key === "Enter") {
-      this._wordService.submitGuess(this.currentGuess, this._wordService.getAnswer()).subscribe(res => {
-          this.previousResults.push(res.toString());
-          this.previousGuesses.push(this.currentGuess);
-          this.currentGuess = "";
-        })
-    }
+    if (/^[a-z]$/i.test(event.key) && this.currentGuess.length <= 5) this.letter(event.key);
+    if (event.key === "Backspace") this.backspace();
+    if (event.key === "Enter") this.enter();
   }
 
+  onScreenKeyboardEvent(event: string) {
+    if (event === "{bksp}") this.backspace();
+    else if (event === "{enter}") this.enter();
+    else if (/^[a-z]$/i.test(event) && this.currentGuess.length <= 5) this.letter(event);
+  }
+
+  letter(letter: string) {
+    this.currentGuess = this.currentGuess.concat(letter);
+  }
+  backspace() {
+    this.currentGuess = this.currentGuess.slice(0, this.currentGuess.length - 1);
+  }
+  enter() {
+    this._wordService.submitGuess(this.currentGuess, this._wordService.getAnswer()).subscribe(res => {
+      this.previousResults.push(res.toString());
+      this.previousGuesses.push(this.currentGuess);
+      this.currentGuess = "";
+    });
+  }
+  
   getStatusClass(result: string) {
     if (result === "3") {
       return "correct";
