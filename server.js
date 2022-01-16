@@ -19,6 +19,8 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 
 app.use(express.static('./dist/wordmind'));
 
+app.use(express.static('./static', { dotfiles: 'allow' }));
+
 app.get('/', (req, res) =>
     res.sendFile('index.html', {root: 'dist/wordmind/'}),
 );
