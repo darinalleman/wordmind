@@ -22,5 +22,12 @@
 .container {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-content: space-between;
+  height:100vh;
+}
+
+guesses {
+  display:flex;
+  flex-direction: column;
+  min-height:10vh;
 }

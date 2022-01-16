@@ -16,6 +16,7 @@ export class GuessesComponent implements OnInit, OnChanges {
   constructor(private _wordService: WordService) { }
 
   ngOnInit(): void {
+    this._wordService.startGame();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
