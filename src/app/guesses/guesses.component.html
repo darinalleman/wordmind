@@ -1,6 +1,6 @@
 <div class="guesses">    
     <span class="word" *ngFor="let guess of previousGuesses; let j = index">
-        <div class="" *ngFor="let char of numbers; let i = index">
+        <div style="text-align:center;" *ngFor="let char of numbers; let i = index">
             <div class="guess-char" [ngClass]="getStatusClass(previousResults[j][i])" *ngIf="guess[i]">{{guess[i]}}</div>
         </div>
     </span>

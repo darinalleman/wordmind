@@ -38,7 +38,7 @@ app.get('/api/word', function(req, res, next) {
 });
   
 app.post('/api/guess', function(req, res) {
-    var guess = req.body.guess;
+    var guess = req.body.guess.toLowerCase();
     var decrypted = cryptoJS.AES.decrypt(req.body.answer, salt.data);
     var answer = decrypted.toString(cryptoJS.enc.Utf8);
 

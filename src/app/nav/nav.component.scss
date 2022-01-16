@@ -24,10 +24,12 @@
   justify-content: center;
   align-content: space-between;
   height:100vh;
+  background-color: rgb(221, 221, 221);
 }
 
 guesses {
   display:flex;
   flex-direction: column;
   min-height:10vh;
+  min-width: 450px;
 }

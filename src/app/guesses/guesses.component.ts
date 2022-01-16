@@ -8,9 +8,10 @@ import { WordService } from '../word.service';
 })
 export class GuessesComponent implements OnInit, OnChanges {
   public currentGuess: string = "";
-  public numbers = Array(5).fill(null, 0, 6);
-  public previousGuesses: string[] = [];
+  public numbers = Array(5).fill(null);
+  public previousGuesses: string[] = Array(5).fill("");
   public previousResults: string[] = [];
+  public currentGuessCount = 0;
 
   @Input() newGame: boolean = false;
   constructor(private _wordService: WordService) { }
@@ -40,17 +41,20 @@ export class GuessesComponent implements OnInit, OnChanges {
   }
 
   letter(letter: string) {
-    this.currentGuess = this.currentGuess.concat(letter);
+    this.currentGuess = this.currentGuess.concat(letter.toUpperCase());
   }
   backspace() {
     this.currentGuess = this.currentGuess.slice(0, this.currentGuess.length - 1);
   }
   enter() {
-    this._wordService.submitGuess(this.currentGuess, this._wordService.getAnswer()).subscribe(res => {
-      this.previousResults.push(res.toString());
-      this.previousGuesses.push(this.currentGuess);
-      this.currentGuess = "";
-    });
+    if (this.currentGuess.length == 5) {
+      this._wordService.submitGuess(this.currentGuess, this._wordService.getAnswer()).subscribe(res => {
+        this.previousResults.push(res.toString());
+        this.previousGuesses[this.currentGuessCount] = this.currentGuess;
+        this.currentGuessCount++;
+        this.currentGuess = "";
+      });
+    }
   }
   
   getStatusClass(result: string) {

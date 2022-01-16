@@ -1,15 +1,19 @@
 .guess-char {
-	margin-left:15px;
-    font-size: larger;
-    width: 10px;
-    padding: 3px;
+    font-size: 5vh;
+    width: 5vh;
+    background-position: center center;
+    margin:5px;
+    padding: 15px;
     background-color: darkgrey;
+    border-radius: 4px;
+    text-align: center;
 }
 
 .word {
     //margin:0;
     display: flex;
     flex-direction: row;
+    padding: 5px;
 }
 
 .correct {
@@ -17,7 +21,7 @@
 }
 
 .half {
-    background-color: lightyellow !important;
+    background-color:darkkhaki!important;
 }
 
 .incorrect {
