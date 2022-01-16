@@ -42,17 +42,37 @@ app.post('/api/guess', function(req, res) {
     var decrypted = cryptoJS.AES.decrypt(req.body.answer, salt.data);
     var answer = decrypted.toString(cryptoJS.enc.Utf8);
 
-    var response = "";
-    for (var i = 0; i < guess.length; i++) {
-        if (guess[i] == answer[i]) {
-            response += "3";
-        }
-        else if (answer.includes(guess[i])) {
-            response += "2";
-        }
-        else {
-            response += "1";
+    var response = [1,1,1,1,1];
+    for (var i = 0; i < 5; i++) {
+        console.log('guess: ' +  guess[i] + " answer:" + answer[i]);
+        if (guess[i] === answer[i]) {
+            response[i] = 3;
         }
     }
-    res.send( response );
+    for (var i = 0; i < 5; i++) {
+        if (response[i] == 1) { //if the guess position wasn't already marked
+            var indicesInGuess = [];
+            var indicesInAnswer = [];
+
+            for(var j=0; j<5;j++) {
+                if (guess[i] === guess[j]) indicesInGuess.push(j);
+                if (guess[i] === answer[j]) indicesInAnswer.push(j);
+            }
+            if (indicesInAnswer.length > 0) {
+                if (indicesInGuess.length == 1) { //if the guess occurs in the answer only once
+                    response[i] = 2; //mark as half correct
+                }
+                else if (indicesInGuess.length > 1) { //if there are multiple occurences
+                    //only mark the number of guesses as there are answers
+                    for (var k=0; k < indicesInAnswer.length; k++){
+
+                        if (response[indicesInGuess[k]] == 1) response[indicesInGuess[k]] = 2;
+                    }
+                }
+            }
+        }
+    }
+
+    console.log(response.join(''));
+    res.send( response.join('') );
 });
