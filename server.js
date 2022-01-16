@@ -44,7 +44,6 @@ app.post('/api/guess', function(req, res) {
 
     var response = [1,1,1,1,1];
     for (var i = 0; i < 5; i++) {
-        console.log('guess: ' +  guess[i] + " answer:" + answer[i]);
         if (guess[i] === answer[i]) {
             response[i] = 3;
         }
@@ -65,14 +64,11 @@ app.post('/api/guess', function(req, res) {
                 else if (indicesInGuess.length > 1) { //if there are multiple occurences
                     //only mark the number of guesses as there are answers
                     for (var k=0; k < indicesInAnswer.length; k++){
-
                         if (response[indicesInGuess[k]] == 1) response[indicesInGuess[k]] = 2;
                     }
                 }
             }
         }
     }
-
-    console.log(response.join(''));
     res.send( response.join('') );
 });
