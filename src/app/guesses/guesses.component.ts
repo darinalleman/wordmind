@@ -22,8 +22,10 @@ export class GuessesComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['newGame'].previousValue != changes['newGame'].currentValue) {
-      this.previousGuesses = [];
+      this.previousGuesses = Array(5).fill("");
       this.previousResults = [];
+      this.currentGuessCount = 0;
+      this.currentGuess = "";
     }
   }
 
