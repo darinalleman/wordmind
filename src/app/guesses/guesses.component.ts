@@ -12,6 +12,7 @@ export class GuessesComponent implements OnInit, OnChanges {
   public previousGuesses: string[] = Array(5).fill("");
   public previousResults: string[] = [];
   public currentGuessCount = 0;
+  public gameWon = false;
 
   @Input() newGame: boolean = false;
   constructor(private _wordService: WordService) { }
@@ -26,20 +27,25 @@ export class GuessesComponent implements OnInit, OnChanges {
       this.previousResults = [];
       this.currentGuessCount = 0;
       this.currentGuess = "";
+      this.gameWon = false;
     }
   }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (/^[a-z]$/i.test(event.key) && this.currentGuess.length <= 5) this.letter(event.key);
-    if (event.key === "Backspace") this.backspace();
-    if (event.key === "Enter") this.enter();
+    if (!this.gameWon) {
+      if (/^[a-z]$/i.test(event.key) && this.currentGuess.length < 5) this.letter(event.key);
+      if (event.key === "Backspace") this.backspace();
+      if (event.key === "Enter") this.enter();
+    }
   }
 
   onScreenKeyboardEvent(event: string) {
-    if (event === "{bksp}") this.backspace();
-    else if (event === "{enter}") this.enter();
-    else if (/^[a-z]$/i.test(event) && this.currentGuess.length <= 5) this.letter(event);
+    if (!this.gameWon) {
+      if (event === "{bksp}") this.backspace();
+      else if (event === "{enter}") this.enter();
+      else if (/^[a-z]$/i.test(event) && this.currentGuess.length < 5) this.letter(event);
+    }
   }
 
   letter(letter: string) {
@@ -55,6 +61,9 @@ export class GuessesComponent implements OnInit, OnChanges {
         this.previousGuesses[this.currentGuessCount] = this.currentGuess;
         this.currentGuessCount++;
         this.currentGuess = "";
+        if (res.toString() == "33333") { //all letters are correct
+          this.gameWon = true;
+        }
       });
     }
   }
